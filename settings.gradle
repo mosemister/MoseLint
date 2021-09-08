@@ -1,0 +1,3 @@
+rootProject.name = 'MoseLint'
+
+include "OpenBlock-ProjectCreator"

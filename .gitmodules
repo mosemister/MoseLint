@@ -1,0 +1,3 @@
+[submodule "ProjectCreator"]
+	path = ProjectCreator
+	url = https://github.com/Open-Block/ProjectCreator.git
