@@ -1,7 +1,11 @@
 package org.moselint.check;
 
+import org.moselint.exception.CheckException;
 import org.openblock.creator.code.Codeable;
 
+public interface Checker {
 
-public interface Checker<T extends Codeable> {
+    boolean canCheck(Codeable codeable);
+
+    void isValid(Codeable codeable) throws CheckException;
 }
