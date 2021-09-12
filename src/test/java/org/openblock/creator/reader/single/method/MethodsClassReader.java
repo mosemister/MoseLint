@@ -4,8 +4,10 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.openblock.creator.code.Codeable;
 import org.openblock.creator.code.Nameable;
 import org.openblock.creator.code.Visibility;
+import org.openblock.creator.code.call.Returnable;
 import org.openblock.creator.code.call.returntype.ReturnType;
 import org.openblock.creator.code.call.returntype.StatedReturnType;
 import org.openblock.creator.code.clazz.ClassType;
@@ -14,6 +16,8 @@ import org.openblock.creator.code.clazz.type.BasicType;
 import org.openblock.creator.code.clazz.type.IType;
 import org.openblock.creator.code.clazz.type.VoidType;
 import org.openblock.creator.code.function.IFunction;
+import org.openblock.creator.code.line.primitive.StringConstructor;
+import org.openblock.creator.code.line.returning.ReturnLine;
 import org.openblock.creator.code.variable.parameter.Parameter;
 import org.openblock.creator.impl.custom.clazz.AbstractCustomClass;
 import org.openblock.creator.impl.custom.clazz.reader.CustomClassReader;
@@ -24,8 +28,9 @@ import org.openblock.creator.project.Project;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
-public class MethodClassReader {
+public class MethodsClassReader {
 
     private static final String[] classAsString = {"package org.openblock.creator.reader;",
             "",
@@ -188,5 +193,37 @@ public class MethodClassReader {
             return;
         }
         Assertions.assertEquals(String.class, jClass.getTargetClass());
+    }
+
+    @Test
+    public void testCodeBlock() {
+        List<IFunction> functions = new ArrayList<>(customClass.getFunctions());
+        if (functions.size() != 3) {
+            Assertions.fail("3 functions should be found. However found " + functions.size());
+        }
+        functions.sort(Comparator.comparing(Nameable::getName));
+
+        List<Codeable> codeBlock = functions.get(1).getCodeBlock();
+
+        Assertions.assertTrue(functions.get(0).getCodeBlock().isEmpty());
+        Assertions.assertFalse(codeBlock.isEmpty());
+        Assertions.assertTrue(functions.get(2).getCodeBlock().isEmpty());
+        Assertions.assertEquals(1, codeBlock.size());
+
+        Codeable codeable = codeBlock.get(0);
+        if (!(codeable instanceof ReturnLine returnLine)) {
+            Assertions.fail("Code line is not ReturnLine but instead '" + codeable.getClass().getName() + "'");
+            return;
+        }
+
+        Optional<Returnable.ReturnableLine> opReturnLine = returnLine.getLine();
+        Assertions.assertTrue(opReturnLine.isPresent());
+
+        Returnable.ReturnableLine line = opReturnLine.get();
+        if (!(line instanceof StringConstructor stringConstructor)) {
+            Assertions.fail("ReturnLine is not StringConstructor but instead " + line.getClass().getName());
+            return;
+        }
+        Assertions.assertEquals("Hello World!", stringConstructor.getValue());
     }
 }
