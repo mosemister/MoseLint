@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.openblock.creator.code.Codeable;
 import org.openblock.creator.code.Nameable;
 import org.openblock.creator.code.Visibility;
-import org.openblock.creator.code.call.Returnable;
 import org.openblock.creator.code.call.returntype.ReturnType;
 import org.openblock.creator.code.call.returntype.StatedReturnType;
 import org.openblock.creator.code.clazz.ClassType;
@@ -16,6 +15,7 @@ import org.openblock.creator.code.clazz.type.BasicType;
 import org.openblock.creator.code.clazz.type.IType;
 import org.openblock.creator.code.clazz.type.VoidType;
 import org.openblock.creator.code.function.IFunction;
+import org.openblock.creator.code.line.CallingLine;
 import org.openblock.creator.code.line.primitive.StringConstructor;
 import org.openblock.creator.code.line.returning.ReturnLine;
 import org.openblock.creator.code.variable.parameter.Parameter;
@@ -216,10 +216,10 @@ public class MethodsClassReader {
             return;
         }
 
-        Optional<Returnable.ReturnableLine> opReturnLine = returnLine.getLine();
-        Assertions.assertTrue(opReturnLine.isPresent());
+        Optional<CallingLine> opCallingLine = returnLine.getLine();
+        Assertions.assertTrue(opCallingLine.isPresent());
 
-        Returnable.ReturnableLine line = opReturnLine.get();
+        CallingLine line = opCallingLine.get();
         if (!(line instanceof StringConstructor stringConstructor)) {
             Assertions.fail("ReturnLine is not StringConstructor but instead " + line.getClass().getName());
             return;

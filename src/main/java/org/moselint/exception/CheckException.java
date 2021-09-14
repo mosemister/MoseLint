@@ -1,8 +1,8 @@
 package org.moselint.exception;
 
-public abstract class CheckException extends Exception {
+public class CheckException extends Exception {
 
-    private CheckExceptionContext[] context;
+    private final CheckExceptionContext[] context;
 
     @Deprecated
     public CheckException() {
