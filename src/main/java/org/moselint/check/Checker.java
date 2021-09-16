@@ -8,4 +8,6 @@ public interface Checker {
     boolean canCheck(Codeable codeable);
 
     void isValid(Codeable codeable) throws CheckException;
+
+    String getDisplayName();
 }

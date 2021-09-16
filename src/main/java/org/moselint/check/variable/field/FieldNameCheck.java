@@ -26,4 +26,9 @@ public class FieldNameCheck implements FieldCheck {
         }
 
     }
+
+    @Override
+    public String getDisplayName() {
+        return "Field name";
+    }
 }
